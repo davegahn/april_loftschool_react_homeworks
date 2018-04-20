@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
+import Market from '../Market';
+import Farm from '../Farm';
+import Budget from '../Budget';
 
-class App extends Component {
+export class App extends Component {
   render() {
-    return null;
+    return <div className="app" />;
   }
 }
 

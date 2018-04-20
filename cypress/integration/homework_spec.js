@@ -1,133 +1,287 @@
-describe('homework', () => {
+describe('Домашняя работа', () => {
   before(() => {
     cy.visit('/');
   });
 
-  describe('Общая верстка', () => {
-    describe('Присутствие тегов', () => {
-      it('Присутствует .component-list__name с именем VideoPlayer', () => {
-        cy.get('.component-list__name').contains('VideoPlayer');
+  describe('Верстка', () => {
+    describe('Верстка .market', () => {
+      it('Присутствует тег .market', () => {
+        cy.get('.market');
       });
-      it('Присутствует .component-list__name с именем Card number formating', () => {
-        cy.get('.component-list__name').contains('Card number formating');
+      it('Присутствует тег .new-orders__create-button', () => {
+        cy.get('.new-orders__create-button');
       });
-      it('Присутствует .component-list__name с именем ModalButton', () => {
-        cy.get('.component-list__name').contains('ModalButton');
+      it('Присутствует тег button с текстом «Отправить заказ на ферму»', () => {
+        cy.get('button').contains('Отправить заказ на ферму');
+      });
+    });
+
+    describe('Верстка .farm', () => {
+      it('Присутствует тег .farm', () => {
+        cy.get('.farm');
       });
 
-      it('Присутствует тег hr', () => {
-        cy.get('hr');
+      it('Присутствует тег button с текстом «Отправить урожай клиенту»', () => {
+        cy.get('button').contains('Отправить урожай клиенту');
       });
+    });
+
+    describe('Верстка .budget', () => {
+      it('Присутствует тег .budget', () => {
+        cy.get('.budget');
+      });
+
+      it('Присутствует тег p c текстом «Всего получено денег»', () => {
+        cy.get('.budget p').contains('Всего получено денег');
+      });
+      it('Присутствует тег p c текстом «Расходы продавцов»', () => {
+        cy.get('.budget p').contains('Расходы продавцов');
+      });
+      it('Присутствует тег p c текстом «Расходы на ферме»', () => {
+        cy.get('.budget p').contains('Расходы на ферме');
+      });
+      it('Присутствует тег p c текстом «Расходы на доставку»', () => {
+        cy.get('.budget p').contains('Расходы на доставку');
+      });
+      it('Присутствует тег p c текстом «Итого»', () => {
+        cy.get('.budget p').contains('Итого');
+      });
+    });
+    it('Присутствует тег .app', () => {
+      cy.get('.app');
     });
   });
 
-  describe('VideoPlayer', () => {
-    describe('Верстка', () => {
-      it('Присутствует video тег', () => {
-        cy.get('video');
-      });
-      it('Присутствует кнопка с надписью Play', () => {
-        cy.get('button').contains('Play');
-      });
-      it('Присутствует кнопка с надписью Stop', () => {
-        cy.get('button').contains('Stop');
-      });
-    });
-    describe('Логика', () => {
-      it('Включает видео при нажатии на кнопку с надписью Play', () => {
-        cy
-          .get('button')
-          .contains('Play')
-          .click();
-        cy.wait(300);
-        cy.get('video').then($tag => {
-          expect($tag[0].paused).to.eq(false);
-          expect($tag[0].ended).to.eq(false);
-          expect($tag[0].currentTime).to.be.gt(0);
-        });
-      });
-      it('Выключает видео при нажатии на кнопку с надписью Stop', () => {
-        cy
-          .get('button')
-          .contains('Play')
-          .click();
-        cy.wait(300);
-        cy
-          .get('button')
-          .contains('Stop')
-          .click();
-
-        cy.get('video').then($tag => {
-          expect($tag[0].paused).to.eq(true);
-          expect($tag[0].ended).to.eq(false);
-          expect($tag[0].currentTime).to.be.gt(0);
-        });
-      });
-    });
-  });
-
-  describe('Card number formating', () => {
-    before(() => {
-      cy
-        .get('.component-list__name')
-        .contains('Card number formating')
-        .click();
-    });
-
-    describe('Верстка', () => {
-      it('Присутствует video тег', () => {
-        cy.get('input');
-      });
-    });
-
-    describe('Логика', () => {
-      it('Форматирует ввод, после 4го символа появляется пробел', () => {
-        cy.get('input').type('12345{rightarrow}6789{rightarrow}0123{rightarrow}456');
-        cy.get('input').and('have.value', '1234 5678 9012 3456');
-      });
-    });
-  });
-
-  describe('ModalButton', () => {
+  describe('Сценарии', () => {
     beforeEach(() => {
-      cy.reload();
+      cy.visit('/');
+    });
+    it('Создание заказа', () => {
+      cy.get('.new-orders__create-button').click();
+      cy.get('.market .order-list .order').should('have.length', 1);
+    });
+    it('Создание 3 заказов', () => {
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.market .order-list .order').should('have.length', 3);
+    });
+    it('Создание 1 заказа и перевод заказа на ферму', () => {
+      cy.get('.new-orders__create-button').click();
       cy
-        .get('.component-list__name')
-        .contains('ModalButton')
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy.get('.market .order-list .order').should('have.length', 0);
+      cy.get('.farm .order').should('have.length', 1);
+    });
+    it('Создание 3 заказов и перевод их всех на ферму', () => {
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy.get('.market .order-list .order').should('have.length', 0);
+      cy.get('.farm .order').should('have.length', 3);
+    });
+
+    it('Создание 1 заказа с отправкой клиенту', () => {
+      cy.get('.new-orders__create-button').click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy.get('.farm .order').should('have.length', 0);
+    });
+    it('Создание 3 заказов с отправкой клиенту', () => {
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy.get('.farm .order').should('have.length', 0);
+    });
+  });
+  describe('Сценарий создания заказа в магазине', () => {
+    before(() => {
+      cy.get('.new-orders__create-button').click();
+    });
+    it('Сумма заказов отражается в строке «Всего получено денег»', () => {
+      cy.get('.market .order-list .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-profit').then($el => {
+          const profit = parseInt($el.text(), 10);
+          expect(profit).to.eq(orderPrice);
+        });
+      });
+    });
+    it('Сумма заказов отражается в строке «Всего получено денег»', () => {
+      cy.get('.market .order-list .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-profit').then($el => {
+          const profit = parseInt($el.text(), 10);
+          expect(profit).to.eq(orderPrice);
+        });
+      });
+    });
+    it('Расходы продавцов равны -20', () => {
+      cy.get('.t-sellers').then($el => {
+        const sellers = parseInt($el.text(), 10);
+        expect(sellers).to.eq(-20);
+      });
+    });
+    it('«Итого» равно стоимость заказа минус расходы продавцов', () => {
+      cy.get('.market .order-list .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-total').then($el => {
+          const total = parseInt($el.text(), 10);
+          expect(total).to.eq(orderPrice - 20);
+        });
+      });
+    });
+  });
+  describe('Сценарий отправки заказа на производство на ферму', () => {
+    before(() => {
+      cy.get('.new-orders__create-button').click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
         .click();
     });
-
-    describe('Верстка', () => {
-      it('Присутствует кнопка с надписью Show modal!', () => {
-        cy.get('button').contains('Show modal!');
-      });
-
-      it('Модальное окно отсутствует', () => {
-        cy.get('#portal .modal').and('not.exist');
+    it('Сумма заказов отражается в строке «Всего получено денег»', () => {
+      cy.get('.farm .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-profit').then($el => {
+          const profit = parseInt($el.text(), 10);
+          expect(profit).to.eq(orderPrice);
+        });
       });
     });
-
-    describe('Логика', () => {
-      it('При нажатии кнопки Show modal! появляется модальное окно #portal .modal', () => {
-        cy
-          .get('button')
-          .contains('Show modal!')
-          .click();
-        cy.get('#portal .modal');
+    it('Сумма заказов отражается в строке «Всего получено денег»', () => {
+      cy.get('.farm .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-profit').then($el => {
+          const profit = parseInt($el.text(), 10);
+          expect(profit).to.eq(orderPrice);
+        });
       });
+    });
+    it('Расходы продавцов равны -20', () => {
+      cy.get('.t-sellers').then($el => {
+        const sellers = parseInt($el.text(), 10);
+        expect(sellers).to.eq(-20);
+      });
+    });
+    it('Расходы на ферме равны -100', () => {
+      cy.get('.t-farm').then($el => {
+        const sellers = parseInt($el.text(), 10);
+        expect(sellers).to.eq(-100);
+      });
+    });
+    it('«Итого» равно стоимость заказа минус расходы продавцов, минус ферма', () => {
+      cy.get('.farm .order .order-price').then($el => {
+        const orderPrice = parseInt($el.text(), 10);
+        cy.get('.t-total').then($el => {
+          const total = parseInt($el.text(), 10);
+          expect(total).to.eq(orderPrice - 20 - 100);
+        });
+      });
+    });
+  });
+  describe.only('Сценарий отправки заказа клиенту', () => {
+    before(() => {
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy.get('.new-orders__create-button').click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить заказ на ферму')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+      cy
+        .get('button')
+        .contains('Отправить урожай клиенту')
+        .click();
+    });
+    it('«Итого» = все деньги минус расходы', () => {
+      cy.get('.t-total').then($el => {
+        const total = parseInt($el.text(), 10);
 
-      it('При нажатии кнопки Close в модальном окне окно закрывается', () => {
-        cy
-          .get('button')
-          .contains('Show modal!')
-          .click();
+        cy.get('.t-profit').then($el => {
+          const profit = parseInt($el.text(), 10);
 
-        cy
-          .get('.modal button')
-          .contains('Close')
-          .click();
+          cy.get('.t-sellers').then($el => {
+            const sellers = parseInt($el.text(), 10);
+            cy.get('.t-farm').then($el => {
+              const farm = parseInt($el.text(), 10);
+              cy.get('.t-delivery').then($el => {
+                const delivery = parseInt($el.text(), 10);
 
-        cy.get('#portal .modal').and('not.exist');
+                expect(total).to.eq(profit + sellers + farm + delivery);
+              });
+            });
+          });
+        });
       });
     });
   });
