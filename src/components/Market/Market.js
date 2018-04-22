@@ -3,6 +3,13 @@ import './Market.css';
 
 import Order from 'components/Order';
 
+import { connect } from 'react-redux';
+
+import {
+  createOrder,
+  moveOrderToFarm
+} from 'actions/marketActions';
+
 let id = 0;
 
 const getId = () => {
@@ -34,45 +41,75 @@ const getNewOrder = () => {
   };
 };
 
-
-
+const getOrderByFarm = () => {
+  return {
+    profit: 0,
+    ProductionPrice: 0
+  };
+};
 class Market extends Component {
 
   state = {
     isDisabled: true
   }
 
-  handleClick = () => {
+  handleCreateClick = () => {
     this.setState({ isDisabled: false });
+    this.props.createOrder(getNewOrder());
   }
 
-  componentWillMount = () => {
-    console.log(this.props.children);
+  handleSendClick = () => {
+    this.props.moveOrderToFarm(getOrderByFarm());
   }
 
   render() {
+    const { orders } = this.props;
     const { isDisabled } = this.state;
+    console.log(orders);
+
     return (
       <div className="market">
         <h2>Новые заказы в магазине</h2>
         <button className="new-orders__create-button"
-        // onClick={this.handleClick}
-        // onClick={() => this.props.children.createOrder(getNewOrder)}
-        // onClick={this.child.createOrder()}
-        >
-          Создать заказ
+          onClick={this.handleCreateClick}
+        >Создать заказ
         </button>
         <button disabled={isDisabled}
-          onClick={this.send}
+          onClick={this.handleSendClick}
         >Отправить заказ на ферму
         </button>
-        <Order ref={c => (this.child = c)} />
+        <Order orders={orders} />
       </div>
     );
   }
 }
 
-export default Market;
+/**
+ *
+ * Передаем состояние в props компоненты
+ */
+const mapStateToProps = state => ({
+  orders: state.market,
+});
+
+/**
+ * Передаем диспатч экшенов в пропсы
+ * Длинный и короткий синтаксис
+ */
+// const mapDispatchToProps = dispatch => ({
+//   createOrder: (id, name) => dispatch(createOrder(id, name)),
+//   moveOrderToFarm: (id, name) => dispatch(moveOrderToFarm(id, name)),
+//   moveOrderToCustomer: (id, name) => dispatch(moveOrderToCustomer(id, name))
+// });
+const mapDispatchToProps = {
+  createOrder,
+  moveOrderToFarm
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Market)
 
 
 

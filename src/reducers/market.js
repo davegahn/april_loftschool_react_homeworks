@@ -12,7 +12,7 @@ export default (state = [], action) => {
       // return { ...state, orders: [...state.orders, action.payload] }
       return [...state, action.payload];
     case MOVE_ORDER_TO_FARM:
-      return [];
+      return [...state, action.payload];
     default:
       return state;
   }
