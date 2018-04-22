@@ -35,29 +35,30 @@ const getNewOrder = () => {
 };
 
 
-export class Market extends Component {
+
+class Market extends Component {
 
   state = {
-    // orders: [{ name: '' }],
-    orders: [],
-    isDisabled: true,
-    name: ''
+    isDisabled: true
   }
 
   handleClick = () => {
-    this.setState({ orders: this.state.orders.concat([{ order: getNewOrder() }]) })
     this.setState({ isDisabled: false });
   }
 
-  render() {
-    console.log(this.state);
+  componentWillMount = () => {
+    console.log(this.props.children);
+  }
 
-    const { isDisabled, orders } = this.state;
+  render() {
+    const { isDisabled } = this.state;
     return (
       <div className="market">
         <h2>Новые заказы в магазине</h2>
         <button className="new-orders__create-button"
-          onClick={this.handleClick}
+        // onClick={this.handleClick}
+        // onClick={() => this.props.children.createOrder(getNewOrder)}
+        // onClick={this.child.createOrder()}
         >
           Создать заказ
         </button>
@@ -65,10 +66,15 @@ export class Market extends Component {
           onClick={this.send}
         >Отправить заказ на ферму
         </button>
-        <Order orders={orders} name={orders.order.name} price={orders.orderprice} createdAt={orders.ordercreatedAt} />
+        <Order ref={c => (this.child = c)} />
       </div>
     );
   }
 }
 
 export default Market;
+
+
+
+
+
