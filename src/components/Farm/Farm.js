@@ -31,14 +31,14 @@ class Farm extends Component {
           onClick={this.handleSendClick}
         >Отправить урожай клиенту
         </button>
-        <Order orders={orders} />
+        {/* <Order orders={orders} /> */}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  orders: state.market,
+  orders: state.farm,
 });
 
 export default connect(

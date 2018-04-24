@@ -41,12 +41,6 @@ const getNewOrder = () => {
   };
 };
 
-const getOrderByFarm = () => {
-  return {
-    profit: 0,
-    ProductionPrice: 0
-  };
-};
 class Market extends Component {
 
   state = {
@@ -58,14 +52,23 @@ class Market extends Component {
     this.props.createOrder(getNewOrder());
   }
 
-  handleSendClick = () => {
-    this.props.moveOrderToFarm(getOrderByFarm());
+  getLastOrder = () => {
+    const { orders } = this.props;
+    const last = orders.orders.slice(-1);
+    return last;
   }
+
+  handleSendClick = () => {
+    let last = this.getLastOrder();
+    this.props.moveOrderToFarm(last);
+    const { orders } = this.props;
+    delete orders.last;
+  }
+
 
   render() {
     const { orders } = this.props;
     const { isDisabled } = this.state;
-    console.log(orders);
 
     return (
       <div className="market">
@@ -78,7 +81,7 @@ class Market extends Component {
           onClick={this.handleSendClick}
         >Отправить заказ на ферму
         </button>
-        <Order orders={orders} />
+        {/* <Order orders={orders} /> */}
       </div>
     );
   }
@@ -89,7 +92,7 @@ class Market extends Component {
  * Передаем состояние в props компоненты
  */
 const mapStateToProps = state => ({
-  orders: state.market,
+  orders: state.market
 });
 
 /**

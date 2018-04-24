@@ -4,10 +4,9 @@ import './Order.css';
 const Order = (props) => {
   const { orders } = props;
 
-
   return (
     <div className="order-list" >
-      {orders.map(order => (
+      {orders.orders.map(order => (
         <div className="order" key={order.id}>
           <div className="order_upper">
             <p className="p--order">{`Название: ${order.name}`}</p>
