@@ -62,7 +62,13 @@ class Market extends Component {
     let last = this.getLastOrder();
     this.props.moveOrderToFarm(last);
     const { orders } = this.props;
-    delete orders.last;
+    // delete this.props.orders;
+    orders.orders.forEach((order, i) => {
+      if (order[i] === last[i]) {
+        delete last[i];
+      }
+      return null;
+    });
   }
 
 
