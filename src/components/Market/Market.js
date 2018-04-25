@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 
 import {
   createOrder,
-  moveOrderToFarm
+  moveOrderToFarm,
+  countPriceToBudget
 } from 'actions/marketActions';
 
 let id = 0;
@@ -41,36 +42,39 @@ const getNewOrder = () => {
   };
 };
 
+
 class Market extends Component {
 
   state = {
     isDisabled: true
   }
 
+  moveOrderToBudget = () => {
+    const { orders } = this.props;
+    let result = 0;
+    let prices = orders.orders.map(order => {
+      return order.price;
+    });
+    let summ = prices.reduce((a, b) => { return a + b }, 0);
+    result += summ;
+    return result;
+  }
+
   handleCreateClick = () => {
     this.setState({ isDisabled: false });
     this.props.createOrder(getNewOrder());
+    // this.moveOrderToBudget();
+    this.props.countPriceToBudget(this.moveOrderToBudget());
   }
 
-  getLastOrder = () => {
-    const { orders } = this.props;
-    const last = orders.orders.slice(-1);
-    return last;
+  handleMoveOrderToFarm = () => {
+    const { moveOrderToFarm, orders } = this.props;
+    const lastOrder = orders.orders[orders.orders.length - 1];
+    if (orders.orders.length > 0) {
+      moveOrderToFarm(lastOrder);
+      orders.orders.length -= 1;
+    }
   }
-
-  handleSendClick = () => {
-    let last = this.getLastOrder();
-    this.props.moveOrderToFarm(last);
-    const { orders } = this.props;
-    // delete this.props.orders;
-    orders.orders.forEach((order, i) => {
-      if (order[i] === last[i]) {
-        delete last[i];
-      }
-      return null;
-    });
-  }
-
 
   render() {
     const { orders } = this.props;
@@ -82,12 +86,12 @@ class Market extends Component {
         <button className="new-orders__create-button"
           onClick={this.handleCreateClick}
         >Создать заказ
-        </button>
+      </button>
         <button disabled={isDisabled}
-          onClick={this.handleSendClick}
+          onClick={this.handleMoveOrderToFarm}
         >Отправить заказ на ферму
-        </button>
-        {/* <Order orders={orders} /> */}
+      </button>
+        <Order orders={orders} />
       </div>
     );
   }
@@ -112,7 +116,8 @@ const mapStateToProps = state => ({
 // });
 const mapDispatchToProps = {
   createOrder,
-  moveOrderToFarm
+  moveOrderToFarm,
+  countPriceToBudget
 };
 
 export default connect(

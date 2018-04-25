@@ -1,4 +1,4 @@
-import { CREATE_ORDER, MOVE_ORDER_TO_FARM } from './marketTypes'; // импортируем типы экшенов в виде констант
+import { CREATE_ORDER, MOVE_ORDER_TO_FARM, COUNT_PRICE_TO_BUDGET } from './marketTypes'; // импортируем типы экшенов в виде констант
 
 
 /**
@@ -12,6 +12,11 @@ export const createOrder = (payload) => ({
 
 export const moveOrderToFarm = (payload) => ({
   type: MOVE_ORDER_TO_FARM,
+  payload
+});
+
+export const countPriceToBudget = (payload) => ({
+  type: COUNT_PRICE_TO_BUDGET,
   payload
 });
 

@@ -5,40 +5,47 @@ import { connect } from 'react-redux';
 
 import { moveOrderToCustomer } from 'actions/farmActions';
 
-const mapDispatchToProps = {
-  moveOrderToCustomer
-};
-
 class Farm extends Component {
 
   state = {
     isDisabled: true
   }
 
-  handleSendClick = () => {
-    this.props.moveOrderToCustomer();
+  componentWillReceiveProps() {
+    this.setState({ isDisabled: false })
+  }
+
+  handleMoveOrderToCustomer = () => {
+    const { moveOrderToCustomer, orders } = this.props;
+    orders.orders.pop();
+    moveOrderToCustomer();
   }
 
   render() {
     const { orders } = this.props;
     const { isDisabled } = this.state;
-    // console.log(orders);
 
     return (
       <div className="farm">
         <h2>Производство на ферме</h2>
         <button disabled={isDisabled}
-          onClick={this.handleSendClick}
+          onClick={this.handleMoveOrderToCustomer}
         >Отправить урожай клиенту
         </button>
-        {/* <Order orders={orders} /> */}
+        <Order orders={orders} />
       </div>
     );
   }
 }
 
+const mapDispatchToProps = {
+  moveOrderToCustomer
+};
+
 const mapStateToProps = state => ({
   orders: state.farm,
+  profit: state.profit,
+  productionPrice: state.productionPrice
 });
 
 export default connect(

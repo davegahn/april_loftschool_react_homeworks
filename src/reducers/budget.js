@@ -1,20 +1,16 @@
 import { MOVE_ORDER_TO_CUSTOMER } from 'actions/farmTypes';
-import {
-  CREATE_ORDER,
-  MOVE_ORDER_TO_FARM,
-} from 'actions/marketTypes';
 
 export default (state = [], action) => {
   switch (action.type) {
     case MOVE_ORDER_TO_CUSTOMER:
-
       return [...state, action.payload];
-    case CREATE_ORDER:
-
-      return [...state, action.payload];
-    case MOVE_ORDER_TO_FARM:
-      return [];
     default:
       return state;
   }
 };
+
+
+ //     profit: props.orders.orders, // приходит цена товара при создании заказа
+  //     marketExpanse: 0, // отнимается 20 очков за каждый заказ при создании заказа
+  //     farmExpance: 0, // отнимается 100 очков за каждый заказ при отправке заказа на ферму
+  //     deliveryExpanse: 0 // отнимается 20 очков за каждый заказ при отправке заказа клиенту
