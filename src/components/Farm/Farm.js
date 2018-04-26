@@ -6,20 +6,19 @@ import { connect } from 'react-redux';
 import { moveOrderToCustomer } from 'actions/farmActions';
 
 class Farm extends Component {
-
   state = {
-    isDisabled: true
-  }
+    isDisabled: true,
+  };
 
   componentWillReceiveProps() {
-    this.setState({ isDisabled: false })
+    this.setState({ isDisabled: false });
   }
 
   handleMoveOrderToCustomer = () => {
     const { moveOrderToCustomer, orders } = this.props;
-    orders.orders.pop();
+    // orders.orders.pop();
     moveOrderToCustomer();
-  }
+  };
 
   render() {
     const { orders } = this.props;
@@ -28,33 +27,23 @@ class Farm extends Component {
     return (
       <div className="farm">
         <h2>Производство на ферме</h2>
-        <button disabled={isDisabled}
-          onClick={this.handleMoveOrderToCustomer}
-        >Отправить урожай клиенту
+        <button disabled={isDisabled} onClick={this.handleMoveOrderToCustomer}>
+          Отправить урожай клиенту
         </button>
-        <Order orders={orders} />
+        {/* <Order orders={orders} /> */}
       </div>
     );
   }
 }
 
 const mapDispatchToProps = {
-  moveOrderToCustomer
+  moveOrderToCustomer,
 };
 
 const mapStateToProps = state => ({
   orders: state.farm,
-  profit: state.profit,
-  productionPrice: state.productionPrice
+  profit: state.farm.profit,
+  productionPrice: state.farm.productionPrice,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Farm)
-
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(Farm);

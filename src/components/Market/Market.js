@@ -5,11 +5,7 @@ import Order from 'components/Order';
 
 import { connect } from 'react-redux';
 
-import {
-  createOrder,
-  moveOrderToFarm,
-  countPriceToBudget
-} from 'actions/marketActions';
+import { createOrder, moveOrderToFarm, countPriceToBudget } from 'actions/marketActions';
 
 let id = 0;
 
@@ -42,12 +38,10 @@ const getNewOrder = () => {
   };
 };
 
-
 class Market extends Component {
-
   state = {
-    isDisabled: true
-  }
+    isDisabled: true,
+  };
 
   moveOrderToBudget = () => {
     const { orders } = this.props;
@@ -55,17 +49,19 @@ class Market extends Component {
     let prices = orders.orders.map(order => {
       return order.price;
     });
-    let summ = prices.reduce((a, b) => { return a + b }, 0);
+    let summ = prices.reduce((a, b) => {
+      return a + b;
+    }, 0);
     result += summ;
     return result;
-  }
+  };
 
   handleCreateClick = () => {
     this.setState({ isDisabled: false });
     this.props.createOrder(getNewOrder());
     // this.moveOrderToBudget();
-    this.props.countPriceToBudget(this.moveOrderToBudget());
-  }
+    // this.props.countPriceToBudget(this.moveOrderToBudget());
+  };
 
   handleMoveOrderToFarm = () => {
     const { moveOrderToFarm, orders } = this.props;
@@ -74,7 +70,7 @@ class Market extends Component {
       moveOrderToFarm(lastOrder);
       orders.orders.length -= 1;
     }
-  }
+  };
 
   render() {
     const { orders } = this.props;
@@ -83,15 +79,13 @@ class Market extends Component {
     return (
       <div className="market">
         <h2>Новые заказы в магазине</h2>
-        <button className="new-orders__create-button"
-          onClick={this.handleCreateClick}
-        >Создать заказ
-      </button>
-        <button disabled={isDisabled}
-          onClick={this.handleMoveOrderToFarm}
-        >Отправить заказ на ферму
-      </button>
-        <Order orders={orders} />
+        <button className="new-orders__create-button" onClick={this.handleCreateClick}>
+          Создать заказ
+        </button>
+        <button disabled={isDisabled} onClick={this.handleMoveOrderToFarm}>
+          Отправить заказ на ферму
+        </button>
+        {/* <Order orders={orders} /> */}
       </div>
     );
   }
@@ -102,7 +96,7 @@ class Market extends Component {
  * Передаем состояние в props компоненты
  */
 const mapStateToProps = state => ({
-  orders: state.market
+  orders: state.market,
 });
 
 /**
@@ -117,15 +111,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   createOrder,
   moveOrderToFarm,
-  countPriceToBudget
+  countPriceToBudget,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Market)
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(Market);
