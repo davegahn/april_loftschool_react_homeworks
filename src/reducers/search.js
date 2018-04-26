@@ -2,7 +2,7 @@ import {
   GET_SERIES_REQUEST,
   GET_SERIES_SUCCESS,
   GET_SERIES_FAILURE,
-} from 'actions/search.js';
+} from 'actions/search';
 
 const initialState = {
   series: null,

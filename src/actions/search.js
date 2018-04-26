@@ -11,7 +11,7 @@ export const getSeriesSuccess = payload => ({
   payload,
 });
 
-export const getSeriesfailure = error => ({
+export const getSeriesfailure = payload => ({
   type: GET_SERIES_FAILURE,
-  error,
+  payload,
 });
