@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import './Market.css';
-
 import Order from 'components/Order';
-
 import { connect } from 'react-redux';
-
-import { createOrder, moveOrderToFarm, countPriceToBudget } from 'actions/marketActions';
+import { createOrder, moveOrderToFarm } from 'actions/marketActions';
 
 let id = 0;
 
@@ -43,33 +40,15 @@ class Market extends Component {
     isDisabled: true,
   };
 
-  moveOrderToBudget = () => {
-    const { orders } = this.props;
-    let result = 0;
-    let prices = orders.orders.map(order => {
-      return order.price;
-    });
-    let summ = prices.reduce((a, b) => {
-      return a + b;
-    }, 0);
-    result += summ;
-    return result;
-  };
-
   handleCreateClick = () => {
     this.setState({ isDisabled: false });
     this.props.createOrder(getNewOrder());
-    // this.moveOrderToBudget();
-    // this.props.countPriceToBudget(this.moveOrderToBudget());
   };
 
   handleMoveOrderToFarm = () => {
     const { moveOrderToFarm, orders } = this.props;
-    const lastOrder = orders.orders[orders.orders.length - 1];
-    if (orders.orders.length > 0) {
-      moveOrderToFarm(lastOrder);
-      orders.orders.length -= 1;
-    }
+    const lastOrder = orders[orders.length - 1];
+    moveOrderToFarm(lastOrder);
   };
 
   render() {
@@ -85,7 +64,9 @@ class Market extends Component {
         <button disabled={isDisabled} onClick={this.handleMoveOrderToFarm}>
           Отправить заказ на ферму
         </button>
-        {/* <Order orders={orders} /> */}
+        <div className="order-list">
+          {orders.map((order, idx) => <Order key={order.id} {...order} />)}
+        </div>
       </div>
     );
   }
@@ -95,9 +76,7 @@ class Market extends Component {
  *
  * Передаем состояние в props компоненты
  */
-const mapStateToProps = state => ({
-  orders: state.market,
-});
+const mapStateToProps = state => ({ ...state.market });
 
 /**
  * Передаем диспатч экшенов в пропсы
@@ -111,7 +90,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   createOrder,
   moveOrderToFarm,
-  countPriceToBudget,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Market);

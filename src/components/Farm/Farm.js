@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Farm.css';
 import Order from 'components/Order';
 import { connect } from 'react-redux';
-
 import { moveOrderToCustomer } from 'actions/farmActions';
 
 class Farm extends Component {
@@ -16,8 +15,8 @@ class Farm extends Component {
 
   handleMoveOrderToCustomer = () => {
     const { moveOrderToCustomer, orders } = this.props;
-    // orders.orders.pop();
-    moveOrderToCustomer();
+    const lastOrder = orders[orders.length - 1];
+    moveOrderToCustomer(lastOrder);
   };
 
   render() {
@@ -30,7 +29,9 @@ class Farm extends Component {
         <button disabled={isDisabled} onClick={this.handleMoveOrderToCustomer}>
           Отправить урожай клиенту
         </button>
-        {/* <Order orders={orders} /> */}
+        <div className="order-list">
+          {orders.map((order, idx) => <Order key={order.id} {...order} />)}
+        </div>
       </div>
     );
   }
@@ -40,10 +41,6 @@ const mapDispatchToProps = {
   moveOrderToCustomer,
 };
 
-const mapStateToProps = state => ({
-  orders: state.farm,
-  profit: state.farm.profit,
-  productionPrice: state.farm.productionPrice,
-});
+const mapStateToProps = state => ({ ...state.farm });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Farm);
