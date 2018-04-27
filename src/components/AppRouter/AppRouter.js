@@ -21,11 +21,11 @@ class AppRouter extends PureComponent {
     return (
       <div>
         <h1>Firefly</h1>
-        {/* {series.map(ep => (
+        {series.map(ep => (
           <div key={ep.id}>
             <img src={ep.image.original} alt={ep.name} />
           </div>
-        ))} */}
+        ))}
       </div>
     );
   }
