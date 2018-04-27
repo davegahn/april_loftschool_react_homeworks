@@ -1,5 +1,6 @@
 import { getSeriesRequest } from 'actions/search';
 import { getSeriesSuccess, getSeriesFailure } from '../actions/search';
+// import { search } from '../api';
 
 // store означает передать состояние, next - выполнить проброс к следующему action
 const searchMiddleware = store => next => action => {
@@ -10,11 +11,12 @@ const searchMiddleware = store => next => action => {
     })
       .then(response => response.json())
       .then(series => {
-        store.dispatch(getSeriesSuccess(series, series.length));
+        store.dispatch(getSeriesSuccess(series));
       })
       .catch(error => {
         store.dispatch(getSeriesFailure(error));
       });
+    // search();
   }
 
   next(action); // пробрасываем экшн по цепочке middlewares

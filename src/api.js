@@ -5,6 +5,9 @@ export const search = query =>
   })
     .then(response => response.json())
     .then(shows => shows.map(show => show.show));
+// .catch(error => {
+//   store.dispatch(getSeriesFailure(error));
+// });
 
 export const show = showId =>
   fetch(`http://api.tvmaze.com/shows/${showId}?embed=cast`, {
