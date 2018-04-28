@@ -1,7 +1,7 @@
 import { createActions } from 'redux-actions';
 
 const {
-  search: { request: getSeriesRequest, success: getSeriesSuccess, failure: getSeriesFailure },
+  search: { request: getSearchRequest, success: getSearchSuccess, failure: getSearchFailure },
 } = createActions({
   SEARCH: {
     REQUEST: null,
@@ -10,4 +10,4 @@ const {
   },
 });
 
-export { getSeriesRequest, getSeriesSuccess, getSeriesFailure };
+export { getSearchRequest, getSearchSuccess, getSearchFailure };

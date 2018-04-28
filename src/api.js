@@ -6,7 +6,7 @@ export const search = query =>
     .then(response => response.json())
     .then(shows => shows.map(show => show.show));
 // .catch(error => {
-//   store.dispatch(getSeriesFailure(error));
+//   store.dispatch(getSearchFailure(error));
 // });
 
 export const show = showId =>

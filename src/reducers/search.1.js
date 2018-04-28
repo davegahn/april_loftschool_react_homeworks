@@ -1,37 +1,33 @@
 // import {
-//   GET_SERIES_REQUEST,
-//   GET_SERIES_SUCCESS,
-//   GET_SERIES_FAILURE,
+//   GET_result_REQUEST,
+//   GET_result_SUCCESS,
+//   GET_result_FAILURE,
 // } from 'actions/search';
 
 // С использованием react-actions
-import {
-  getSeriesRequest,
-  getSeriesSuccess,
-  getSeriesFailure,
-} from 'actions/search';
+import { getSearchRequest, getSearchSuccess, getSearchFailure } from 'actions/search';
 
 const initialState = {
-  series: [],
+  result: [],
   isLoading: false,
   error: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    // case GET_SERIES_REQUEST:
-    case getSeriesRequest.toString(): // С использованием react-actions
+    // case GET_result_REQUEST:
+    case getSearchRequest.toString(): // С использованием react-actions
       return { ...state, isLoading: true };
-    // case GET_SERIES_SUCCESS:
-    case getSeriesSuccess.toString():
+    // case GET_result_SUCCESS:
+    case getSearchSuccess.toString():
       return {
         ...state,
-        series: action.payload,
-        // series: state.series.concat(action.payload), можно так
+        result: action.payload,
+        // result: state.result.concat(action.payload), можно так
         isLoading: false,
       };
-    // case GET_SERIES_FAILURE:
-    case getSeriesFailure.toString():
+    // case GET_result_FAILURE:
+    case getSearchFailure.toString():
       return {
         ...state,
         error: action.payload,

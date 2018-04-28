@@ -1,22 +1,22 @@
-import { getSeriesRequest, getSeriesSuccess, getSeriesFailure } from 'actions/search';
+import { getSearchRequest, getSearchSuccess, getSearchFailure } from 'actions/search';
 
 const initialState = {
-  series: [],
+  result: [],
   isLoading: false,
   error: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case getSeriesRequest.toString():
+    case getSearchRequest.toString():
       return { ...state, isLoading: true };
-    case getSeriesSuccess.toString():
+    case getSearchSuccess.toString():
       return {
         ...state,
-        series: action.payload,
+        result: action.payload,
         isLoading: false,
       };
-    case getSeriesFailure.toString():
+    case getSearchFailure.toString():
       return {
         ...state,
         error: action.payload,
