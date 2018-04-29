@@ -1,17 +1,15 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
+import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 
-import { getShowRequest } from 'actions/show';
+import {getShowRequest} from 'actions/show';
 
 class ShowPage extends PureComponent {
-  componentDidMount() {
-    this.props.getShowRequest();
+  componentDidMount () {
+    this.props.getShowRequest (this.props.match.params.id);
   }
 
-  render() {
-    const { entities, isLoading, error } = this.props;
-    console.dir(entities._embedded);
-
+  render () {
+    const {entities, isLoading, error} = this.props;
     if (isLoading) {
       return <p>Данные загружаютcя...</p>;
     }
@@ -21,9 +19,16 @@ class ShowPage extends PureComponent {
     return (
       <div>
         <p>{entities.name}</p>
-        <img src={entities.image} alt={entities.name} />
-        <div dangerouslySetInnerHTML={{ __html: entities.summary }} />
-        {/* {entities._embedded.cast.map(person => console.log(person))} */}
+        {entities.image
+          ? <img src={entities.image.medium} alt={entities.name} />
+          : null}
+        <div dangerouslySetInnerHTML={{__html: entities.summary}} />
+        {entities._embedded
+          ? entities._embedded.cast.map (role => {
+              console.log (role.person.id);
+              <div key={role.person.id} className="t-person" />;
+            })
+          : null}
       </div>
     );
   }
@@ -35,6 +40,6 @@ const mapStateToProps = state => ({
   entities: state.shows.entities,
 });
 
-const mapDispatchToProps = { getShowRequest };
+const mapDispatchToProps = {getShowRequest};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowPage);
+export default connect (mapStateToProps, mapDispatchToProps) (ShowPage);

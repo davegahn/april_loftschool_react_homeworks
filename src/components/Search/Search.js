@@ -1,19 +1,22 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
+import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 import ShowPreview from 'components/ShowPreview';
 
-import { getSearchRequest } from 'actions/search';
+import {getSearchRequest} from 'actions/search';
 
 class Search extends PureComponent {
-  handleChange = () => {};
-  handleClick = () => {};
+  handleChange = event => {
+    this.phrase = event.target.value;
+    return this.phrase;
+  };
 
-  componentDidMount() {
-    this.props.getSearchRequest();
-  }
+  handleClick = () => {
+    this.props.getSearchRequest (this.phrase);
+  };
 
-  render() {
-    const { result, isLoading, error } = this.props;
+  render () {
+    const {result, isLoading, error} = this.props;
+    console.log (result);
     if (isLoading) {
       return <p>Данные загружаютcя...</p>;
     }
@@ -22,10 +25,18 @@ class Search extends PureComponent {
     }
     return (
       <div>
-        <input type="text" value="" onChange={this.handleChange} placeholder="Название сериала" />
-        <button onClick={this.handleClick}>Найти</button>
+        <div>
+          <input
+            type="text"
+            onChange={evt => this.handleChange (evt)}
+            placeholder="Название сериала"
+          />
+          <button onClick={this.handleClick}>Найти</button>
+        </div>
         <div className="t-search-result">
-          {result.map((serie, idx) => <ShowPreview key={serie.id} {...serie} />)}
+          {result.map ((serie, idx) => (
+            <ShowPreview key={serie.show.id} {...serie.show} />
+          ))}
         </div>
       </div>
     );
@@ -38,6 +49,6 @@ const mapStateToProps = state => ({
   result: state.search.result,
 });
 
-const mapDispatchToProps = { getSearchRequest };
+const mapDispatchToProps = {getSearchRequest};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect (mapStateToProps, mapDispatchToProps) (Search);
