@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-
 import {getShowRequest} from 'actions/show';
 
 class ShowPage extends PureComponent {
-  componentDidMount () {
+  componentDidMout () {
     this.props.getShowRequest (this.props.match.params.id);
   }
 
@@ -26,7 +25,15 @@ class ShowPage extends PureComponent {
         {entities._embedded
           ? entities._embedded.cast.map (role => {
               console.log (role.person.id);
-              <div key={role.person.id} className="t-person" />;
+              <div key={role.person.id} className="t-person">
+                <p>{role.person.name}</p>
+                {role.person.image
+                  ? <img
+                      src={role.person.image.medium}
+                      alt={role.person.name}
+                    />
+                  : null}
+              </div>;
             })
           : null}
       </div>

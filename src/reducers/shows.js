@@ -9,7 +9,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case getShowRequest.toString():
-      return { ...state, isLoading: true, payload: action.payload };
+      return { ...state, isLoading: true }; //, payload: action.payload
     case getShowSuccess.toString():
       return {
         ...state,
