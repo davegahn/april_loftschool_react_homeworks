@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import ShowPreview from 'components/ShowPreview';
-
-import {getSearchRequest} from 'actions/search';
+import { PreviewList, ResultNotFound } from 'components/Styled';
+import { getSearchRequest } from 'actions/search';
 
 class Search extends PureComponent {
   handleChange = event => {
@@ -11,12 +11,11 @@ class Search extends PureComponent {
   };
 
   handleClick = () => {
-    this.props.getSearchRequest (this.phrase);
+    this.props.getSearchRequest(this.phrase);
   };
 
-  render () {
-    const {result, isLoading, error} = this.props;
-    console.log (result);
+  render() {
+    const { result, isLoading, error } = this.props;
     if (isLoading) {
       return <p>Данные загружаютcя...</p>;
     }
@@ -28,16 +27,20 @@ class Search extends PureComponent {
         <div>
           <input
             type="text"
-            onChange={evt => this.handleChange (evt)}
+            onChange={evt => this.handleChange(evt)}
             placeholder="Название сериала"
           />
           <button onClick={this.handleClick}>Найти</button>
         </div>
-        <div className="t-search-result">
-          {result.map ((serie, idx) => (
-            <ShowPreview key={serie.show.id} {...serie.show} />
-          ))}
-        </div>
+        <PreviewList className="t-search-result">
+          {result.length ? (
+            result.map((serie, idx) => <ShowPreview key={serie.id} {...serie} />)
+          ) : (
+            <ResultNotFound>
+              <p>Вариантов не найдено</p>
+            </ResultNotFound>
+          )}
+        </PreviewList>
       </div>
     );
   }
@@ -49,6 +52,6 @@ const mapStateToProps = state => ({
   result: state.search.result,
 });
 
-const mapDispatchToProps = {getSearchRequest};
+const mapDispatchToProps = { getSearchRequest };
 
-export default connect (mapStateToProps, mapDispatchToProps) (Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -1,7 +1,7 @@
 import { getShowRequest, getShowSuccess, getShowFailure } from 'actions/show';
 
 const initialState = {
-  entities: [],
+  entities: {},
   isLoading: false,
   error: null,
 };
@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
     case getShowFailure.toString():
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         isLoading: false,
       };
     default:

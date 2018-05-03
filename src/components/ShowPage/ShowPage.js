@@ -1,14 +1,14 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
-import {getShowRequest} from 'actions/show';
-
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { getShowRequest } from 'actions/show';
+import { ActorsList, Actor } from 'components/Styled';
 class ShowPage extends PureComponent {
-  componentDidMout () {
-    this.props.getShowRequest (this.props.match.params.id);
+  componentWillMount() {
+    this.props.getShowRequest(this.props.match.params.id);
   }
 
-  render () {
-    const {entities, isLoading, error} = this.props;
+  render() {
+    const { entities, isLoading, error } = this.props;
     if (isLoading) {
       return <p>Данные загружаютcя...</p>;
     }
@@ -18,24 +18,17 @@ class ShowPage extends PureComponent {
     return (
       <div>
         <p>{entities.name}</p>
-        {entities.image
-          ? <img src={entities.image.medium} alt={entities.name} />
-          : null}
-        <div dangerouslySetInnerHTML={{__html: entities.summary}} />
-        {entities._embedded
-          ? entities._embedded.cast.map (role => {
-              console.log (role.person.id);
-              <div key={role.person.id} className="t-person">
+        {entities.image && <img src={entities.image.medium} alt={entities.name} />}
+        <div dangerouslySetInnerHTML={{ __html: entities.summary }} />
+        <ActorsList>
+          {entities._embedded &&
+            entities._embedded.cast.map((role, idx) => (
+              <Actor key={idx} className="t-person">
                 <p>{role.person.name}</p>
-                {role.person.image
-                  ? <img
-                      src={role.person.image.medium}
-                      alt={role.person.name}
-                    />
-                  : null}
-              </div>;
-            })
-          : null}
+                {role.person.image && <img src={role.person.image.medium} alt={role.person.name} />}
+              </Actor>
+            ))}
+        </ActorsList>
       </div>
     );
   }
@@ -47,6 +40,6 @@ const mapStateToProps = state => ({
   entities: state.shows.entities,
 });
 
-const mapDispatchToProps = {getShowRequest};
+const mapDispatchToProps = { getShowRequest };
 
-export default connect (mapStateToProps, mapDispatchToProps) (ShowPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowPage);
