@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 
-export default class ShowPreview extends PureComponent {
+export default class ShowPreview extends Component {
   render() {
     const { series } = this.props;
     return (
