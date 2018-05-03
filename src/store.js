@@ -8,7 +8,7 @@ export default initialState =>
     rootReducer,
     initialState,
     compose(
-      applyMiddleware(searchMiddleware), //, showMiddleware
+      applyMiddleware(searchMiddleware, showMiddleware),
       window.devToolsExtension ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
     ),
   );

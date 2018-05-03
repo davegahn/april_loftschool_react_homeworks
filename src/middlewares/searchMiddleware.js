@@ -1,26 +1,27 @@
-import { getSeriesRequest } from 'actions/search';
-import { getSeriesSuccess, getSeriesFailure } from '../actions/search';
-// import { search } from '../api';
+import {getSearchRequest} from 'actions/search';
+import {getSearchSuccess, getSearchFailure} from 'actions/search';
 
 // store означает передать состояние, next - выполнить проброс к следующему action
 const searchMiddleware = store => next => action => {
-  if (action.type === getSeriesRequest.toString()) {
-    fetch(`http://api.tvmaze.com/shows/180/episodes`, {
+  if (action.type === getSearchRequest.toString ()) {
+    fetch (`http://api.tvmaze.com/search/shows?q=${action.payload}`, {
       method: 'GET',
       mode: 'cors',
     })
-      .then(response => response.json())
-      .then(series => {
-        store.dispatch(getSeriesSuccess(series));
+      .then (response => {
+        const res = response.json ();
+        return res;
       })
-      .catch(error => {
-        store.dispatch(getSeriesFailure(error));
+      .then (result => {
+        store.dispatch (getSearchSuccess (result));
+      })
+      .catch (error => {
+        store.dispatch (getSearchFailure (error));
       });
-    // search();
   }
 
-  next(action); // пробрасываем экшн по цепочке middlewares
-  // return next(action);  если мы хотим вернуть результат работы middleware и в компоненте componentDidMount const result = get getSeriesRequest();
+  next (action); // пробрасываем экшн по цепочке middlewares
+  // return next(action);  если мы хотим вернуть результат работы middleware и в компоненте componentDidMount const result = get getSearchRequest();
 };
 
 export default searchMiddleware;
