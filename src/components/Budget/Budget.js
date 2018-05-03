@@ -21,7 +21,7 @@ const Budget = props => {
       </p>
       <p>
         Итого:{' '}
-        <span className="t-total">{profit + marketExpanse + deliveryExpanse + farmExpanse}</span>
+        <span className="t-total">{profit + marketExpanse - deliveryExpanse - farmExpanse}</span>
       </p>
     </div>
   );

@@ -14,17 +14,17 @@ export default (state = initState, action) => {
       return {
         ...state,
         profit: state.profit + action.payload.price,
-        marketExpanse: state.marketExpanse - 20,
+        marketExpanse: state.marketExpanse + 20,
       };
     case MOVE_ORDER_TO_CUSTOMER:
       return {
         ...state,
-        deliveryExpanse: state.deliveryExpanse - 20,
+        deliveryExpanse: state.deliveryExpanse + 20,
       };
     case MOVE_ORDER_TO_FARM:
       return {
         ...state,
-        farmExpanse: state.farmExpanse - 100,
+        farmExpanse: state.farmExpanse + 100,
       };
     default:
       return state;
