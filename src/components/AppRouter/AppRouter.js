@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import './AppRouter.css';
 import { Route, Switch } from 'react-router-dom';
 
 import Search from 'components/Search';
 import ShowPage from 'components/ShowPage';
 
-class AppRouter extends PureComponent {
+class AppRouter extends Component {
   render() {
     return (
       <div className="App">
